@@ -1,0 +1,7 @@
+[
+null,
+{"id":1,"list":[{"code":231,"indent":0,"parameters":[1,"hizuke",0,0,0,0,100,100,255,0]},{"code":231,"indent":0,"parameters":[2,"save",0,0,21,93,100,100,255,0]},{"code":231,"indent":0,"parameters":[3,"aitemu",0,0,21,121,100,100,255,0]},{"code":356,"indent":0,"parameters":["P_CALL_CE 2 2 1"]},{"code":356,"indent":0,"parameters":["P_CALL_CE 3 3 1"]},{"code":0,"indent":0,"parameters":[]}],"name":"日付表示","switchId":1,"trigger":2},
+{"id":2,"list":[{"code":352,"indent":0,"parameters":[]},{"code":0,"indent":0,"parameters":[]}],"name":"セーブ画面","switchId":1,"trigger":2},
+{"id":3,"list":[{"code":351,"indent":0,"parameters":[]},{"code":0,"indent":0,"parameters":[]}],"name":"メニュー画面","switchId":1,"trigger":2},
+{"id":4,"list":[{"code":0,"indent":0,"parameters":[]}],"name":"","switchId":1,"trigger":0}
+]
