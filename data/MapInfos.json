@@ -3,7 +3,7 @@ null,
 {"id":1,"expanded":true,"name":"初期マップ","order":1,"parentId":0,"scrollX":458.5,"scrollY":335.5},
 {"id":2,"expanded":true,"name":"早朝赤川河川敷一枚絵","order":2,"parentId":1,"scrollX":458.5,"scrollY":335.5},
 {"id":3,"expanded":false,"name":"早朝赤川河川敷死体発見","order":3,"parentId":2,"scrollX":832,"scrollY":640},
-{"id":4,"expanded":false,"name":"梅子暗闇","order":4,"parentId":2,"scrollX":458.5,"scrollY":591.5},
-{"id":5,"expanded":true,"name":"テストマップ01","order":5,"parentId":1,"scrollX":450.5,"scrollY":795},
-{"id":6,"expanded":false,"name":"テストマップ02","order":6,"parentId":5,"scrollX":450.5,"scrollY":315}
+{"id":4,"expanded":false,"name":"梅子暗闇","order":4,"parentId":2,"scrollX":450.5,"scrollY":315},
+{"id":5,"expanded":true,"name":"テストマップ01","order":5,"parentId":1,"scrollX":450.5,"scrollY":309},
+{"id":6,"expanded":false,"name":"テストマップ02","order":6,"parentId":5,"scrollX":450.5,"scrollY":309}
 ]
