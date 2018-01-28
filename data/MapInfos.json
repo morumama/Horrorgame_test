@@ -4,10 +4,10 @@ null,
 {"id":2,"expanded":true,"name":"早朝赤川河川敷一枚絵","order":2,"parentId":1,"scrollX":448.5,"scrollY":252.5},
 {"id":3,"expanded":true,"name":"早朝赤川河川敷死体発見","order":3,"parentId":2,"scrollX":471.5,"scrollY":358.5},
 {"id":4,"expanded":false,"name":"取調室","order":7,"parentId":10,"scrollX":832,"scrollY":640},
-{"id":5,"expanded":true,"name":"初期マップ","order":4,"parentId":3,"scrollX":454,"scrollY":312.5},
+{"id":5,"expanded":true,"name":"初期マップ","order":4,"parentId":3,"scrollX":516,"scrollY":413.5},
 null,
 null,
-{"id":8,"expanded":false,"name":"黒猫亭","order":8,"parentId":2,"scrollX":516,"scrollY":413.5},
+{"id":8,"expanded":false,"name":"黒猫亭","order":8,"parentId":2,"scrollX":832,"scrollY":640},
 {"id":9,"expanded":true,"name":"赤川","order":5,"parentId":2,"scrollX":471.5,"scrollY":358.5},
 {"id":10,"expanded":false,"name":"警察署","order":6,"parentId":2,"scrollX":516,"scrollY":413.5}
 ]
