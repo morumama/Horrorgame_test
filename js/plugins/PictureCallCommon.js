@@ -1,11 +1,15 @@
-//=============================================================================
+﻿//=============================================================================
 // PictureCallCommon.js
 // ----------------------------------------------------------------------------
-// Copyright (c) 2015 Triacontane
+// Copyright (c) 2015-2017 Triacontane
 // This plugin is released under the MIT License.
 // http://opensource.org/licenses/mit-license.php
 // ----------------------------------------------------------------------------
 // Version
+// 1.10.5 2017/12/17 コモンイベントを実行するタイプのボタンは、イベント実行中に無効になるよう仕様変更
+// 1.10.4 2017/11/01 ピクチャコモンが呼ばれる瞬間に対象ピクチャが表示されていない場合はイベントを呼ばない仕様に変更
+// 1.10.3 2017/10/28 ピクチャタッチイベントの呼び出し待機中に戦闘に突入すると、戦闘画面表示後に実行されてしまう問題を修正
+// 1.10.2 2017/10/21 戦闘画面に突入する際のエフェクトで、マウスオーバーイベントが予期せず発生する場合がある問題を修正
 // 1.10.1 2017/05/27 動的文字列ピクチャプラグインのウィンドウフレームクリックをピクチャクリックに対応
 // 1.9.3 2017/05/27 競合の可能性のある記述（Objectクラスへのプロパティ追加）をリファクタリング（by liplyさん）
 // 1.9.2 2017/03/16 1.9.0で戦闘中にコモンイベント実行が正しく動作していなかった問題を修正
@@ -40,7 +44,7 @@
 //                  トリガーとして「右クリック」や「長押し」を追加
 // 1.0.0 2015/11/14 初版
 // ----------------------------------------------------------------------------
-// [Blog]   : http://triacontane.blogspot.jp/
+// [Blog]   : https://triacontane.blogspot.jp/
 // [Twitter]: https://twitter.com/triacontane/
 // [GitHub] : https://github.com/triacontane/
 //=============================================================================
@@ -396,7 +400,8 @@
     };
 
     Game_Temp.prototype.clearPictureCallInfo = function() {
-        this.setPictureCallInfo(0);
+        this._pictureCommonId = 0;
+        this._touchPictureId  = 0;
     };
 
     Game_Temp.prototype.setPictureCallInfo = function(pictureCommonId) {
@@ -404,6 +409,9 @@
     };
 
     Game_Temp.prototype.pictureCommonId = function() {
+        if (!$gameScreen.picture(this._touchPictureId)) {
+            this.clearPictureCallInfo();
+        }
         return this._pictureCommonId;
     };
 
@@ -413,6 +421,10 @@
             $gameSwitches.setValue(param * -1, true);
         }
         if (this.isTouchPictureCallCommon()) {
+            if ($gameMap.isEventRunning()) {
+                this._touchPictureParam = null;
+                return;
+            }
             this.setPictureCallInfo(param);
         }
         if (this.isTouchPictureButtonTrigger()) {
@@ -421,6 +433,7 @@
         if (paramGameVariablePictNum > 0) {
             $gameVariables.setValue(paramGameVariablePictNum, pictureId);
         }
+        this._touchPictureId = pictureId;
     };
 
     Game_Temp.prototype.isTouchPictureButtonTrigger = function() {
@@ -628,6 +641,12 @@
         }
     };
 
+    var _Scene_Map_terminate      = Scene_Map.prototype.terminate;
+    Scene_Map.prototype.terminate = function() {
+        _Scene_Map_terminate.apply(this, arguments);
+        $gameTemp.clearPictureCallInfo();
+    };
+
     //=============================================================================
     // Scene_Battle
     //  ピクチャのタッチ状態からのコモンイベント呼び出し予約を追加定義します。
@@ -644,6 +663,12 @@
         var result = BattleManager.updatePictureCommon();
         if (result) return;
         _Scene_Battle_updateBattleProcess.apply(this, arguments);
+    };
+
+    var _Scene_Battle_terminate      = Scene_Battle.prototype.terminate;
+    Scene_Battle.prototype.terminate = function() {
+        _Scene_Battle_terminate.apply(this, arguments);
+        $gameTemp.clearPictureCallInfo();
     };
 
     //=============================================================================
@@ -700,6 +725,10 @@
     var _Sprite_update              = Sprite_Picture.prototype.update;
     Sprite_Picture.prototype.update = function() {
         _Sprite_update.apply(this, arguments);
+        this.updateTouch();
+    };
+
+    Sprite_Picture.prototype.updateTouch = function() {
         this.updateMouseMove();
         this.updateStroke();
         this.updatePointer();
@@ -744,7 +773,9 @@
 
     Sprite_Picture.prototype.callTouch = function() {
         var commandIds = $gameScreen.getPictureCid(this._pictureId);
-        if (!commandIds) return;
+        if (!commandIds || SceneManager.isNextScene(Scene_Battle)) {
+            return;
+        }
         for (var i = 0, n = this._triggerHandler.length; i < n; i++) {
             var handler = this._triggerHandler[i];
             if (handler && commandIds[i] && handler.call(this) && (this.triggerIsFocus(i) || !this.isTransparent())) {
@@ -841,8 +872,8 @@
     Sprite_Picture.prototype.isTouchPosInFrameWindow = function() {
         if (!this._frameWindow) return false;
         var frame = this._frameWindow;
-        var x  = this.getTouchScreenX();
-        var y  = this.getTouchScreenY();
+        var x     = this.getTouchScreenX();
+        var y     = this.getTouchScreenY();
         return frame.x <= x && frame.x + frame.width >= x && frame.y <= y && frame.y + frame.height >= y;
     };
 
